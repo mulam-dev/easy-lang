@@ -4,7 +4,7 @@
 //
 
 Source {
-    |(Gap? Expr)* Gap?|
+    |(Gap? Expr)+ Gap?|
 
     // 空白
     // 支持空格 (Space) 和换行 (LF) 两种字符
@@ -49,7 +49,7 @@ Source {
     // 支持多行和转义序列，只允许使用反引号
     // e.g.: `hello`
     String {
-        |"`" Body "`"|
+        |"`" StringBody "`"|
         StringBody {
             |(`[^\`\\]` | StringBackslashSequence)+|
             StringBackslashSequence {
@@ -72,7 +72,13 @@ Source {
     // 映射/调用
     // e.g.: @token(1 2)
     Call {
-        |"@" Gap? Expr Gap? "(" (Gap? Expr)* Gap? ")"|
+        |"@" Gap? CallHead Gap? "(" CallBody Gap? ")"|
+        CallHead {
+            |Expr|
+        }
+        CallBody {
+            |(Gap? Expr)*|
+        }
     }
 
     // 表达式
