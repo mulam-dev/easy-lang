@@ -1,0 +1,3 @@
+[submodule "chelonia.git"]
+	path = chelonia
+	url = git@github.com:mulam-dev/chelonia.git

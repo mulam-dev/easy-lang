@@ -1,0 +1,87 @@
+//
+// 标准语法
+// 该部分语法是在基础语法之上完善实用性的语法集合
+//
+
+// 空白
+Whitespace {
+    |`[\u0009\u000B\u000C\u0020\u00A0\u000A\u000D\u2028\u2029]`+|
+}
+
+// 注释
+// 包含单行和多行注释两种
+// e.g.: /* comment */ // comment
+Comment {
+    |SingleLineComment|
+    |MultiLineComment|
+    SingleLineComment {
+        |"//" `[^\u000A\u000D\u2028\u2029]`*|
+    }
+    MultiLineComment {
+        |"/*" (`[^\*]` | "*" !"/")* "*/"|
+    }
+}
+
+// 数字
+// 支持2、8、10、16进制、浮点、负数
+// e.g.: -10 0b101b 0o763o 0xfffFFFx 3.14
+Number {
+    |NegativeNumber|
+    |PositiveNumber|
+    NegativeNumber {
+        |"-" PositiveNumber|
+    }
+    PositiveNumber {
+        |PrefixNumber|
+        |FloatNumber|
+        |IntegerNumber|
+        PrefixNumber {
+            |"0b" BinNumber "b"|
+            |"0o" OctNumber "o"|
+            |"0x" HexNumber "x"|
+            BinNumber {
+                |`[01_]`+|
+            }
+            OctNumber {
+                |`[0-7_]`+|
+            }
+            HexNumber {
+                |`[0-9a-fA-F_]`+|
+            }
+        }
+        FloatNumber {
+            |IntegerNumber "." IntegerNumber|
+        }
+        IntegerNumber {
+            |`[0-9_]`+|
+        }
+    }
+}
+
+// 布尔值
+// 支持两种表达
+// e.g.: T F Y N
+Boolean {
+    |True|
+    |False|
+    True {
+        |"T"|
+        |"Y"|
+    }
+    False {
+        |"F"|
+        |"N"|
+    }
+}
+
+// 字符串
+// 和基础集一致
+String {
+    |"`" Body "`"|
+    StringBody {
+        |(`[^\`\\]` | StringBackslashSequence)+|
+        StringBackslashSequence {
+            |"\\" `.`|
+        }
+    }
+}

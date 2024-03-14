@@ -1,0 +1,87 @@
+//
+// 基础语法
+// 该部分语法是保证 Easy-Lang 可使用的最小集合
+//
+
+Source {
+    |(Gap? Expr)* Gap?|
+
+    // 空白
+    // 支持空格 (Space) 和换行 (LF) 两种字符
+    Gap {
+        |`[\u0020\u000A]`+|
+    }
+
+    // 数字
+    // 支持10进制、浮点、负数
+    Number {
+        |NegativeNumber|
+        |PositiveNumber|
+        NegativeNumber {
+            |"-" PositiveNumber|
+        }
+        PositiveNumber {
+            |FloatNumber|
+            |IntegerNumber|
+            FloatNumber {
+                |IntegerNumber "." IntegerNumber|
+            }
+            IntegerNumber {
+                |`[0-9_]`+|
+            }
+        }
+    }
+
+    // 布尔值
+    // e.g.: #T #F
+    Boolean {
+        |True|
+        |False|
+        True {
+            |"#T"|
+        }
+        False {
+            |"#F"|
+        }
+    }
+
+    // 字符串
+    // 支持多行和转义序列，只允许使用反引号
+    // e.g.: `hello`
+    String {
+        |"`" Body "`"|
+        StringBody {
+            |(`[^\`\\]` | StringBackslashSequence)+|
+            StringBackslashSequence {
+                |"\\" `.`|
+            }
+        }
+    }
+
+    // 标识符
+    // 支持除 <Whitespace>@#`()以外的所有字符，支持转义序列
+    // 但因为数字的优先级更高，所以形如 -123hello 会被解析为数字 -123 和标记 hello
+    // e.g.: -> $name . ' " \n
+    Token {
+        |(`[^\u0020\u000A@#\`()\\]` | TokenBackslashSequence)+|
+        TokenBackslashSequence {
+            |"\\" `.`|
+        }
+    }
+
+    // 映射/调用
+    // e.g.: @token(1 2)
+    Call {
+        |"@" Gap? Expr Gap? "(" (Gap? Expr)* Gap? ")"|
+    }
+
+    // 表达式
+    // 源代码的基础构造块
+    Expr {
+        |Call|
+        |Number|
+        |Boolean|
+        |String|
+        |Token|
+    }
+}
