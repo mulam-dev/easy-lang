@@ -1,0 +1,8 @@
+0 1 -2 3.14
+#T #F
+\`hello\` \`backseq\n\`
+\`multiline
+newline\`
+token - -> ' $name \\\`
+@call(1 2)
+@@rcall(1)(2)

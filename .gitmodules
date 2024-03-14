@@ -1,3 +1,6 @@
 [submodule "chelonia.git"]
 	path = chelonia
 	url = git@github.com:mulam-dev/chelonia.git
+[submodule "ext-lang.git"]
+	path = ext-lang
+	url = git@github.com:LaneSun/ext-lang.git
