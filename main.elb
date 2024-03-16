@@ -1,0 +1,13 @@
+## @bind(
+##     @as(8000 HTTPServer)
+##     @fn(@ord(@type(@arg(req)) @arg(res))
+##         @send(res `hello`))
+## )
+
+## 递归显示文件夹内容
+
+## 虚拟文件的批量重命名
+
+## 合并两个文件的内容到新文件
+
+@add(1 2)

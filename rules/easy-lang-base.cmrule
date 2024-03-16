@@ -3,14 +3,26 @@
 // 该部分语法是保证 Easy-Lang 可使用的最小集合
 //
 
-Source {
-    |(Gap? Expr)+ Gap?|
+Gap {
+    |Whitespace|
+    |Comment|
 
     // 空白
     // 支持空格 (Space) 和换行 (LF) 两种字符
-    Gap {
+    Whitespace {
         |`[\u0020\u000A]`+|
     }
+
+    // 注释
+    // 支持单行注释
+    // e.g.: ## comment
+    Comment {
+        |"##" `[^\u000A]`* "\u000A"?|
+    }
+}
+
+Source {
+    |Expr|
 
     // 数字
     // 支持10进制、浮点、负数
@@ -72,12 +84,12 @@ Source {
     // 映射/调用
     // e.g.: @token(1 2)
     Call {
-        |"@" Gap? CallHead Gap? "(" CallBody Gap? ")"|
+        |"@" Gap* CallHead Gap* "(" CallBody Gap* ")"|
         CallHead {
             |Expr|
         }
         CallBody {
-            |(Gap? Expr)*|
+            |(Gap* Expr)*|
         }
     }
 

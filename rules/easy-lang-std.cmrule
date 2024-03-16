@@ -67,10 +67,12 @@ Boolean {
     True {
         |"T"|
         |"Y"|
+        |"L"|
     }
     False {
         |"F"|
         |"N"|
+        |"R"|
     }
 }
 
